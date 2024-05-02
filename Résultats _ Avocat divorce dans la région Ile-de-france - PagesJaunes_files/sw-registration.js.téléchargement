@@ -1,0 +1,21 @@
+function unregisterSW() {
+    "serviceWorker" in navigator && window.addEventListener("load", function () {
+        navigator.serviceWorker.getRegistrations().then(function (e) {
+            for (let r of e) r.unregister().then(function (e) {
+                console.log("[SW] : Unregistration succeeded.")
+            })
+        })
+    })
+}
+
+function registerSW() {
+    "serviceWorker" in navigator && window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/push-worker.js").then(function (e) {
+            console.log("[SW] : ServiceWorker registration successful with scope : ", e.scope)
+        }).catch(function (e) {
+            console.log("[SW] : ServiceWorker registration failed: ", e)
+        })
+    })
+}
+
+activeSW ? registerSW() : unregisterSW();
